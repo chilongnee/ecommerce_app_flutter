@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/home.dart';
+import 'package:ecommerce_app/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 
 // Firebase
@@ -16,13 +17,14 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final FirebaseAuthService _auth = FirebaseAuthService();
 
-  final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _fullNameController = TextEditingController();
+  final _addressController = TextEditingController();
   final _passwordController = TextEditingController();
   final cfpasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _obscureText = true;
-  bool _obscureText2 = true;
+  bool _obscureTextPassword = true;
+  bool _obscureTextCFPassword = true;
   bool _isSigningUp = false;
   final FocusNode _fullName = FocusNode();
   final FocusNode _email = FocusNode();
@@ -33,11 +35,12 @@ class _SignUpState extends State<SignUp> {
     setState(() {
       _isSigningUp = true;
     });
-    String fullName = _fullNameController.text.trim();
     String email = _emailController.text.trim();
+    String fullName = _fullNameController.text.trim();
     String password = _passwordController.text;
+    String address = _addressController.text.trim();
 
-    User? user = await _auth.createUserWithEmailAndPassWord(
+    User? user = await _auth.createUserWithEmailAndPassword(
         context: context, email: email, password: password);
 
     setState(() {
@@ -47,15 +50,22 @@ class _SignUpState extends State<SignUp> {
     if (user != null) {
       print("User is successfully created");
 
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-        'id': user.uid,
-        'fullName': fullName,
-        'email': email,
-      });
+      try {
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'id': user.uid,
+          'fullName': fullName,
+          'email': email,
+          'address': address,
+          'createdAt': Timestamp.now(),
+        });
+        print("User info saved to Firestore");
+      } catch (e) {
+        print("Failed to save user info: $e");
+      }
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Home()),
+        MaterialPageRoute(builder: (context) => const Login()),
       );
     } else {
       print("Some error happend");
@@ -194,26 +204,27 @@ class _SignUpState extends State<SignUp> {
                         padding: const EdgeInsets.only(
                             right: 24, left: 24, bottom: 24),
                         child: TextFormField(
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
+                          controller: _fullNameController,
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(color: Colors.white)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide:
-                                      BorderSide(color: Colors.deepPurple)),
-                              hintText: 'Họ tên',
-                              fillColor: Colors.white,
-                              filled: true),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  const BorderSide(color: Colors.deepPurple),
+                            ),
+                            hintText: 'Họ tên',
+                            fillColor: Colors.white,
+                            filled: true,
+                          ),
                           validator: (String? value) {
-                            final RegExp emailRegExp =
-                                RegExp(r'^[^@]+@[^@]+\.[^@]+$');
-                            if (!emailRegExp.hasMatch(value ?? '')) {
-                              _email.requestFocus();
-                              return 'Email is not in the correct format';
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Vui lòng nhập họ tên';
+                            } else if (value.trim().length < 2) {
+                              return 'Họ tên quá ngắn';
                             }
                             return null;
                           },
@@ -223,26 +234,27 @@ class _SignUpState extends State<SignUp> {
                         padding: const EdgeInsets.only(
                             right: 24, left: 24, bottom: 24),
                         child: TextFormField(
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
+                          controller: _addressController,
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(color: Colors.white)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide:
-                                      BorderSide(color: Colors.deepPurple)),
-                              hintText: 'Địa chỉ',
-                              fillColor: Colors.white,
-                              filled: true),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  const BorderSide(color: Colors.deepPurple),
+                            ),
+                            hintText: 'Địa chỉ',
+                            fillColor: Colors.white,
+                            filled: true,
+                          ),
                           validator: (String? value) {
-                            final RegExp emailRegExp =
-                                RegExp(r'^[^@]+@[^@]+\.[^@]+$');
-                            if (!emailRegExp.hasMatch(value ?? '')) {
-                              _email.requestFocus();
-                              return 'Email is not in the correct format';
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Vui lòng nhập địa chỉ';
+                            } else if (value.trim().length < 5) {
+                              return 'Địa chỉ quá ngắn';
                             }
                             return null;
                           },
@@ -255,7 +267,7 @@ class _SignUpState extends State<SignUp> {
                           focusNode: _password,
                           controller: _passwordController,
                           textInputAction: TextInputAction.done,
-                          obscureText: _obscureText,
+                          obscureText: _obscureTextPassword,
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -271,14 +283,14 @@ class _SignUpState extends State<SignUp> {
                               padding: const EdgeInsets.only(right: 10.0),
                               child: IconButton(
                                 icon: Icon(
-                                  _obscureText2
+                                  _obscureTextPassword
                                       ? Icons.visibility
                                       : Icons.visibility_off,
                                   color: Colors.black,
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    _obscureText2 = !_obscureText2;
+                                    _obscureTextPassword = !_obscureTextPassword;
                                   });
                                 },
                               ),
@@ -286,11 +298,8 @@ class _SignUpState extends State<SignUp> {
                           ),
                           validator: (String? value) {
                             if (value == null || value.length < 6) {
-                              _cfpassword.requestFocus();
+                              _password.requestFocus();
                               return "Password should have at least 6 characters";
-                            } else if (value != _passwordController.text) {
-                              _cfpassword.requestFocus();
-                              return "Confirm password do not match";
                             }
                             return null;
                           },
@@ -303,7 +312,7 @@ class _SignUpState extends State<SignUp> {
                           focusNode: _cfpassword,
                           controller: cfpasswordController,
                           textInputAction: TextInputAction.done,
-                          obscureText: _obscureText,
+                          obscureText: _obscureTextCFPassword,
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -319,14 +328,14 @@ class _SignUpState extends State<SignUp> {
                               padding: const EdgeInsets.only(right: 10.0),
                               child: IconButton(
                                 icon: Icon(
-                                  _obscureText
+                                  _obscureTextCFPassword
                                       ? Icons.visibility
                                       : Icons.visibility_off,
                                   color: Colors.black,
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    _obscureText = !_obscureText;
+                                    _obscureTextCFPassword = !_obscureTextCFPassword;
                                   });
                                 },
                               ),
@@ -334,8 +343,11 @@ class _SignUpState extends State<SignUp> {
                           ),
                           validator: (String? value) {
                             if (value == null || value.length < 6) {
-                              _password.requestFocus();
+                              _cfpassword.requestFocus();
                               return "Password should have at least 6 characters";
+                            } else if (value != _passwordController.text) {
+                              _cfpassword.requestFocus();
+                              return "Confirm password do not match";
                             }
                             return null;
                           },

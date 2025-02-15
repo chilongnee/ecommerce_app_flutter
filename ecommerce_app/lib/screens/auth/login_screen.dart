@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 // SCREEN
 import 'package:ecommerce_app/home.dart';
-import 'package:ecommerce_app/screens/auth/login/forgot_password.dart';
+import 'package:ecommerce_app/screens/auth/register_screen.dart';
+import 'package:ecommerce_app/screens/auth/forgot_password_screen.dart';
 // LIB
 import 'package:flutter_social_button/flutter_social_button.dart';
 // FIREBASE
 import 'package:ecommerce_app/services/firebase_auth_service.dart';
-import 'package:ecommerce_app/screens/auth/firebase_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Login extends StatefulWidget {
@@ -22,7 +22,7 @@ class _LoginState extends State<Login> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _obscureText = true;
+  bool _obscureTextPassword = true;
   bool _rememberMe = false;
   bool _isSigning = false;
   final FocusNode _focusNode = FocusNode();
@@ -99,7 +99,7 @@ class _LoginState extends State<Login> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const SignUp()),
+                        MaterialPageRoute(builder: (context) => SignUp()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -204,7 +204,7 @@ class _LoginState extends State<Login> {
                           focusNode: _focusNode2,
                           controller: _passwordController,
                           textInputAction: TextInputAction.done,
-                          obscureText: _obscureText,
+                          obscureText: _obscureTextPassword,
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -220,14 +220,14 @@ class _LoginState extends State<Login> {
                               padding: const EdgeInsets.only(right: 10.0),
                               child: IconButton(
                                 icon: Icon(
-                                  _obscureText
+                                  _obscureTextPassword
                                       ? Icons.visibility
                                       : Icons.visibility_off,
                                   color: Colors.black,
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    _obscureText = !_obscureText;
+                                    _obscureTextPassword = !_obscureTextPassword;
                                   });
                                 },
                               ),

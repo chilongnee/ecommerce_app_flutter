@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
+// SCREEN
 import 'package:ecommerce_app/home.dart';
-import 'package:ecommerce_app/screens/auth/login/login_screen.dart';
-import 'package:ecommerce_app/screens/auth/register/register_screen.dart';
+import 'package:ecommerce_app/screens/auth/login_screen.dart';
+import 'package:ecommerce_app/screens/auth/register_screen.dart';
+// FIREBASE
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,7 +45,7 @@ class AuthWidget extends StatelessWidget {
   if (firebaseUser != null) {
     firstWidget = Home();
   } else {
-    firstWidget = SignUp();
+    firstWidget = Login();
   }
     return firstWidget;
   }

@@ -19,7 +19,7 @@ class FirebaseAuthService {
     return null;
   }
 
-  Future<User?> createUserWithEmailAndPassWord({required BuildContext context, required String email, required password}) async {
+  Future<User?> createUserWithEmailAndPassword({required BuildContext context, required String email, required password}) async {
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       return credential.user;

@@ -31,7 +31,7 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       body: currentScreen,
-      backgroundColor: const Color(0xFFBBEDF2),
+      backgroundColor: const Color(0xFF7AE582),
       floatingActionButton: FloatingActionButton(
         elevation: 0,
         backgroundColor: Colors.blue,
