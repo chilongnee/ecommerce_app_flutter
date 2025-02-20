@@ -86,7 +86,7 @@ class _LoginState extends State<Login> {
           Align(
             alignment: Alignment.topRight,
             child: Padding(
-              padding: const EdgeInsets.only(top: 10.0, right: 10.0),
+              padding: const EdgeInsets.only(top: 80.0, right: 20.0),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -94,7 +94,7 @@ class _LoginState extends State<Login> {
                     'Bạn chưa có tài khoản?',
                     style: TextStyle(fontSize: 12, color: Colors.black),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -123,7 +123,7 @@ class _LoginState extends State<Login> {
             alignment: Alignment.bottomCenter,
             child: Container(
               width: width,
-              height: height / 1.25,
+              height: height / 1.4,
               decoration: const BoxDecoration(
                 color: Color(0xFF7AE582),
                 borderRadius: BorderRadius.only(
@@ -133,49 +133,82 @@ class _LoginState extends State<Login> {
               ),
             ),
           ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
+          Padding(
+            padding: const EdgeInsets.only(top: 100.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 5),
-                const Text(
-                  'HA SHOP',
-                  style: TextStyle(
-                    fontSize: 50,
-                    fontWeight: FontWeight.w400,
+                  const SizedBox(height: 5),
+                  const Text(
+                    'HA SHOP',
+                    style: TextStyle(
+                      fontSize: 50,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                // const SizedBox(height: 10),
-                const Text(
-                  'Mua sắm - Giá tốt - Mỗi ngày',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w300,
+                  // const SizedBox(height: 10),
+                  const Text(
+                    'Mua sắm - Giá tốt - Mỗi ngày',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w300,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
 
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: TextFormField(
-                          focusNode: _focusNode,
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          textInputAction: TextInputAction.next,
-                          decoration: InputDecoration(
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: TextFormField(
+                            focusNode: _focusNode,
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide:
+                                        BorderSide(color: Colors.deepPurple)),
+                                hintText: 'Email',
+                                fillColor: Colors.white,
+                                filled: true),
+                            validator: (String? value) {
+                              final RegExp emailRegExp =
+                                  RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+                              if (!emailRegExp.hasMatch(value ?? '')) {
+                                _focusNode.requestFocus();
+                                return 'Email is not in the correct format';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 24, left: 24, bottom: 24),
+                          child: TextFormField(
+                            focusNode: _focusNode2,
+                            controller: _passwordController,
+                            textInputAction: TextInputAction.done,
+                            obscureText: _obscureTextPassword,
+                            decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                   borderSide: BorderSide(color: Colors.white)),
@@ -183,163 +216,136 @@ class _LoginState extends State<Login> {
                                   borderRadius: BorderRadius.circular(12),
                                   borderSide:
                                       BorderSide(color: Colors.deepPurple)),
-                              hintText: 'Email',
+                              hintText: 'Mật khẩu',
                               fillColor: Colors.white,
-                              filled: true),
-                          validator: (String? value) {
-                            final RegExp emailRegExp =
-                                RegExp(r'^[^@]+@[^@]+\.[^@]+$');
-                            if (!emailRegExp.hasMatch(value ?? '')) {
-                              _focusNode.requestFocus();
-                              return 'Email is not in the correct format';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            right: 24, left: 24, bottom: 24),
-                        child: TextFormField(
-                          focusNode: _focusNode2,
-                          controller: _passwordController,
-                          textInputAction: TextInputAction.done,
-                          obscureText: _obscureTextPassword,
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(color: Colors.white)),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide:
-                                    BorderSide(color: Colors.deepPurple)),
-                            hintText: 'Mật khẩu',
-                            fillColor: Colors.white,
-                            filled: true,
-                            suffixIcon: Padding(
-                              padding: const EdgeInsets.only(right: 10.0),
-                              child: IconButton(
-                                icon: Icon(
-                                  _obscureTextPassword
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Colors.black,
+                              filled: true,
+                              suffixIcon: Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: IconButton(
+                                  icon: Icon(
+                                    _obscureTextPassword
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscureTextPassword =
+                                          !_obscureTextPassword;
+                                    });
+                                  },
                                 ),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscureTextPassword = !_obscureTextPassword;
-                                  });
-                                },
+                              ),
+                            ),
+                            validator: (String? value) {
+                              if (value == null || value.length < 6) {
+                                _focusNode2.requestFocus();
+                                return "Password should have at least 6 characters";
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 24.0, right: 24.0, bottom: 24.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                _signIn();
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              minimumSize: const Size(double.infinity, 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            child: _isSigning
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : const Text(
+                                    'Đăng nhập',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18),
+                                  ),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 16.0, right: 24.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ForgotPassword()),
+                              );
+                            },
+                            child: const Text(
+                              'Bạn quên mật khẩu?',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                decoration: TextDecoration.underline,
                               ),
                             ),
                           ),
-                          validator: (String? value) {
-                            if (value == null || value.length < 6) {
-                              _focusNode2.requestFocus();
-                              return "Password should have at least 6 characters";
-                            }
-                            return null;
-                          },
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 24.0, right: 24.0, bottom: 24.0),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              _signIn();
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            minimumSize: const Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          child: _isSigning
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white,
-                                )
-                              : const Text(
-                                  'Đăng nhập',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18),
+                        const Padding(
+                          padding: EdgeInsets.only(
+                              left: 40.0, right: 40.0, top: 24, bottom: 24),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                  child: Divider(
+                                      color: Colors.black, thickness: 1)),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                child: Text(
+                                  'Đăng nhập với',
+                                  style: TextStyle(fontSize: 14),
                                 ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0, right: 24.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ForgotPassword()),
-                            );
-                          },
-                          child: const Text(
-                            'Bạn quên mật khẩu?',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              decoration: TextDecoration.underline,
-                            ),
+                              ),
+                              Expanded(
+                                  child: Divider(
+                                      color: Colors.black, thickness: 1)),
+                            ],
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(
-                            left: 40.0, right: 40.0, top: 24, bottom: 24),
-                        child: Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Expanded(
-                                child:
-                                    Divider(color: Colors.black, thickness: 1)),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Text(
-                                'Đăng nhập với',
-                                style: TextStyle(fontSize: 14),
-                              ),
+                          children: [
+                            FlutterSocialButton(
+                              onTap: () {},
+                              buttonType: ButtonType.facebook,
+                              mini: true,
+                              iconSize: 15,
                             ),
-                            Expanded(
-                                child:
-                                    Divider(color: Colors.black, thickness: 1)),
+                            const SizedBox(width: 12),
+                            FlutterSocialButton(
+                              onTap: () {},
+                              buttonType: ButtonType.google,
+                              mini: true,
+                              iconSize: 15,
+                            ),
+                            const SizedBox(width: 12),
+                            FlutterSocialButton(
+                              onTap: () {},
+                              buttonType: ButtonType.linkedin,
+                              mini: true,
+                              iconSize: 15,
+                            ),
                           ],
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FlutterSocialButton(
-                            onTap: () {},
-                            buttonType: ButtonType.facebook,
-                            mini: true,
-                            iconSize: 15,
-                          ),
-                          const SizedBox(width: 12),
-                          FlutterSocialButton(
-                            onTap: () {},
-                            buttonType: ButtonType.google,
-                            mini: true,
-                            iconSize: 15,
-                          ),
-                          const SizedBox(width: 12),
-                          FlutterSocialButton(
-                            onTap: () {},
-                            buttonType: ButtonType.linkedin,
-                            mini: true,
-                            iconSize: 15,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
-              ],
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ],

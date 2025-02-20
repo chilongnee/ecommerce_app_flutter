@@ -83,7 +83,7 @@ class _SignUpState extends State<SignUp> {
           Align(
             alignment: Alignment.topRight,
             child: Padding(
-              padding: const EdgeInsets.only(top: 10.0, right: 10.0),
+              padding: const EdgeInsets.only(top: 80.0, right: 20.0),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -91,7 +91,7 @@ class _SignUpState extends State<SignUp> {
                     'Bạn đã có tài khoản?',
                     style: TextStyle(fontSize: 12, color: Colors.black),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
@@ -117,7 +117,7 @@ class _SignUpState extends State<SignUp> {
             alignment: Alignment.bottomCenter,
             child: Container(
               width: width,
-              height: height / 1.25,
+              height: height / 1.35,
               decoration: const BoxDecoration(
                 color: Color(0xFF7AE582),
                 borderRadius: BorderRadius.only(
@@ -127,58 +127,152 @@ class _SignUpState extends State<SignUp> {
               ),
             ),
           ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Ô vuông
-                    Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          'HA SHOP',
-                          style: TextStyle(
-                            fontSize: 50,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Text(
-                          'Tạo tài khoản để mua sắm',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Form(
-                  key: _formKey,
-                  child: Column(
+          Padding(
+            padding: const EdgeInsets.only(top: 100.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: TextFormField(
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          textInputAction: TextInputAction.next,
-                          decoration: InputDecoration(
+                      Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'HA SHOP',
+                            style: TextStyle(
+                              fontSize: 50,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          Text(
+                            'Tạo tài khoản để mua sắm',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: TextFormField(
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide:
+                                        BorderSide(color: Colors.deepPurple)),
+                                hintText: 'Email',
+                                fillColor: Colors.white,
+                                filled: true),
+                            validator: (String? value) {
+                              final RegExp emailRegExp =
+                                  RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+                              if (!emailRegExp.hasMatch(value ?? '')) {
+                                _email.requestFocus();
+                                return 'Email is not in the correct format';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 24, left: 24, bottom: 24),
+                          child: TextFormField(
+                            controller: _fullNameController,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide:
+                                    const BorderSide(color: Colors.white),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide:
+                                    const BorderSide(color: Colors.deepPurple),
+                              ),
+                              hintText: 'Họ tên',
+                              fillColor: Colors.white,
+                              filled: true,
+                            ),
+                            validator: (String? value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Vui lòng nhập họ tên';
+                              } else if (value.trim().length < 2) {
+                                return 'Họ tên quá ngắn';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 24, left: 24, bottom: 24),
+                          child: TextFormField(
+                            controller: _addressController,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide:
+                                    const BorderSide(color: Colors.white),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide:
+                                    const BorderSide(color: Colors.deepPurple),
+                              ),
+                              hintText: 'Địa chỉ',
+                              fillColor: Colors.white,
+                              filled: true,
+                            ),
+                            validator: (String? value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Vui lòng nhập địa chỉ';
+                              } else if (value.trim().length < 5) {
+                                return 'Địa chỉ quá ngắn';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 24, left: 24, bottom: 24),
+                          child: TextFormField(
+                            focusNode: _password,
+                            controller: _passwordController,
+                            textInputAction: TextInputAction.done,
+                            obscureText: _obscureTextPassword,
+                            decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                   borderSide: BorderSide(color: Colors.white)),
@@ -186,204 +280,117 @@ class _SignUpState extends State<SignUp> {
                                   borderRadius: BorderRadius.circular(12),
                                   borderSide:
                                       BorderSide(color: Colors.deepPurple)),
-                              hintText: 'Email',
+                              hintText: 'Mật khẩu',
                               fillColor: Colors.white,
-                              filled: true),
-                          validator: (String? value) {
-                            final RegExp emailRegExp =
-                                RegExp(r'^[^@]+@[^@]+\.[^@]+$');
-                            if (!emailRegExp.hasMatch(value ?? '')) {
-                              _email.requestFocus();
-                              return 'Email is not in the correct format';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            right: 24, left: 24, bottom: 24),
-                        child: TextFormField(
-                          controller: _fullNameController,
-                          textInputAction: TextInputAction.next,
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide:
-                                  const BorderSide(color: Colors.deepPurple),
-                            ),
-                            hintText: 'Họ tên',
-                            fillColor: Colors.white,
-                            filled: true,
-                          ),
-                          validator: (String? value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Vui lòng nhập họ tên';
-                            } else if (value.trim().length < 2) {
-                              return 'Họ tên quá ngắn';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            right: 24, left: 24, bottom: 24),
-                        child: TextFormField(
-                          controller: _addressController,
-                          textInputAction: TextInputAction.next,
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide:
-                                  const BorderSide(color: Colors.deepPurple),
-                            ),
-                            hintText: 'Địa chỉ',
-                            fillColor: Colors.white,
-                            filled: true,
-                          ),
-                          validator: (String? value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Vui lòng nhập địa chỉ';
-                            } else if (value.trim().length < 5) {
-                              return 'Địa chỉ quá ngắn';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            right: 24, left: 24, bottom: 24),
-                        child: TextFormField(
-                          focusNode: _password,
-                          controller: _passwordController,
-                          textInputAction: TextInputAction.done,
-                          obscureText: _obscureTextPassword,
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(color: Colors.white)),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide:
-                                    BorderSide(color: Colors.deepPurple)),
-                            hintText: 'Mật khẩu',
-                            fillColor: Colors.white,
-                            filled: true,
-                            suffixIcon: Padding(
-                              padding: const EdgeInsets.only(right: 10.0),
-                              child: IconButton(
-                                icon: Icon(
-                                  _obscureTextPassword
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Colors.black,
+                              filled: true,
+                              suffixIcon: Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: IconButton(
+                                  icon: Icon(
+                                    _obscureTextPassword
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscureTextPassword =
+                                          !_obscureTextPassword;
+                                    });
+                                  },
                                 ),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscureTextPassword = !_obscureTextPassword;
-                                  });
-                                },
                               ),
                             ),
+                            validator: (String? value) {
+                              if (value == null || value.length < 6) {
+                                _password.requestFocus();
+                                return "Password should have at least 6 characters";
+                              }
+                              return null;
+                            },
                           ),
-                          validator: (String? value) {
-                            if (value == null || value.length < 6) {
-                              _password.requestFocus();
-                              return "Password should have at least 6 characters";
-                            }
-                            return null;
-                          },
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            right: 24, left: 24, bottom: 24),
-                        child: TextFormField(
-                          focusNode: _cfpassword,
-                          controller: cfpasswordController,
-                          textInputAction: TextInputAction.done,
-                          obscureText: _obscureTextCFPassword,
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(color: Colors.white)),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide:
-                                    BorderSide(color: Colors.deepPurple)),
-                            hintText: 'Nhập lại mật khẩu',
-                            fillColor: Colors.white,
-                            filled: true,
-                            suffixIcon: Padding(
-                              padding: const EdgeInsets.only(right: 10.0),
-                              child: IconButton(
-                                icon: Icon(
-                                  _obscureTextCFPassword
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Colors.black,
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 24, left: 24, bottom: 24),
+                          child: TextFormField(
+                            focusNode: _cfpassword,
+                            controller: cfpasswordController,
+                            textInputAction: TextInputAction.done,
+                            obscureText: _obscureTextCFPassword,
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(color: Colors.white)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide:
+                                      BorderSide(color: Colors.deepPurple)),
+                              hintText: 'Nhập lại mật khẩu',
+                              fillColor: Colors.white,
+                              filled: true,
+                              suffixIcon: Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: IconButton(
+                                  icon: Icon(
+                                    _obscureTextCFPassword
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscureTextCFPassword =
+                                          !_obscureTextCFPassword;
+                                    });
+                                  },
                                 ),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscureTextCFPassword = !_obscureTextCFPassword;
-                                  });
-                                },
                               ),
                             ),
+                            validator: (String? value) {
+                              if (value == null || value.length < 6) {
+                                _cfpassword.requestFocus();
+                                return "Password should have at least 6 characters";
+                              } else if (value != _passwordController.text) {
+                                _cfpassword.requestFocus();
+                                return "Confirm password do not match";
+                              }
+                              return null;
+                            },
                           ),
-                          validator: (String? value) {
-                            if (value == null || value.length < 6) {
-                              _cfpassword.requestFocus();
-                              return "Password should have at least 6 characters";
-                            } else if (value != _passwordController.text) {
-                              _cfpassword.requestFocus();
-                              return "Confirm password do not match";
-                            }
-                            return null;
-                          },
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 24.0, right: 24.0, bottom: 24.0),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              _signUp();
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            minimumSize: const Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 24.0, right: 24.0, bottom: 24.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                _signUp();
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              minimumSize: const Size(double.infinity, 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
                             ),
+                            child: _isSigningUp
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : const Text(
+                                    'Đăng ký',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18),
+                                  ),
                           ),
-                          child: _isSigningUp
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white,
-                                )
-                              : const Text(
-                                  'Đăng ký',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18),
-                                ),
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ],

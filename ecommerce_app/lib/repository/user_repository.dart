@@ -61,12 +61,10 @@ class UserRepository extends GetxController{
         linkImage: data["linkImage"] ?? "",
       );
     } else {
-      // Trường hợp dữ liệu rỗng
       print("Dữ liệu người dùng rỗng hoặc không tồn tại");
       return null;
     }
   } else {
-    // Trường hợp không tìm thấy tài liệu
     print("Không tìm thấy tài liệu người dùng với ID: $id");
     return null;
   }
