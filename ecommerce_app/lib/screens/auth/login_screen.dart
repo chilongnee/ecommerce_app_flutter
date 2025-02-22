@@ -23,7 +23,7 @@ class _LoginState extends State<Login> {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _obscureTextPassword = true;
-  bool _rememberMe = false;
+  // bool _rememberMe = false;
   bool _isSigning = false;
   final FocusNode _focusNode = FocusNode();
   final FocusNode _focusNode2 = FocusNode();

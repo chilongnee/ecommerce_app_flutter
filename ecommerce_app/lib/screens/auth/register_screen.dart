@@ -1,10 +1,11 @@
-import 'package:ecommerce_app/home.dart';
-import 'package:ecommerce_app/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
-
-// Firebase
+// SCREEN
+import 'package:ecommerce_app/screens/auth/login_screen.dart';
+// MODEL REPO
+import 'package:ecommerce_app/models/user_model.dart';
+import 'package:ecommerce_app/repository/user_repository.dart';
+// FIREBASE
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/services/firebase_auth_service.dart';
 
 class SignUp extends StatefulWidget {
@@ -16,6 +17,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final FirebaseAuthService _auth = FirebaseAuthService();
+  final UserRepository _userRepo = UserRepository();
 
   final _emailController = TextEditingController();
   final _fullNameController = TextEditingController();
@@ -26,7 +28,7 @@ class _SignUpState extends State<SignUp> {
   bool _obscureTextPassword = true;
   bool _obscureTextCFPassword = true;
   bool _isSigningUp = false;
-  final FocusNode _fullName = FocusNode();
+  // final FocusNode _fullName = FocusNode();
   final FocusNode _email = FocusNode();
   final FocusNode _password = FocusNode();
   final FocusNode _cfpassword = FocusNode();
@@ -40,36 +42,37 @@ class _SignUpState extends State<SignUp> {
     String password = _passwordController.text;
     String address = _addressController.text.trim();
 
-    User? user = await _auth.createUserWithEmailAndPassword(
-        context: context, email: email, password: password);
+    try {
+      User? user = await _auth.createUserWithEmailAndPassword(
+          context: context, email: email, password: password);
+
+      if (user != null) {
+        print("User created successfully");
+
+        UserModel newUser = UserModel(
+          id: user.uid,
+          fullName: fullName,
+          email: email,
+          address: address,
+          linkImage: "",
+        );
+        await _userRepo.createUser(context, newUser);
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Login()),
+        );
+      }
+    } catch (e) {
+      print("Error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Đăng ký thất bại: $e")),
+      );
+    }
 
     setState(() {
       _isSigningUp = false;
     });
-
-    if (user != null) {
-      print("User is successfully created");
-
-      try {
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-          'id': user.uid,
-          'fullName': fullName,
-          'email': email,
-          'address': address,
-          'createdAt': Timestamp.now(),
-        });
-        print("User info saved to Firestore");
-      } catch (e) {
-        print("Failed to save user info: $e");
-      }
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const Login()),
-      );
-    } else {
-      print("Some error happend");
-    }
   }
 
   @override

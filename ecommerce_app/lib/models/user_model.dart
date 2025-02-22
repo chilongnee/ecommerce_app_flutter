@@ -1,19 +1,35 @@
 class UserModel {
-  final String? id;
-  final String? email;
-  final String? fullName;
-  final String? address;
-  final String? linkImage;
+  String? id;
+  String email;
+  String fullName;
+  String address;
+  String? linkImage;
 
-  UserModel({required this.id, required this.email, required this.fullName, required this.address, this.linkImage}); 
+  UserModel({
+    this.id,
+    required this.email,
+    required this.fullName,
+    required this.address,
+    this.linkImage,
+  });
 
-    toJson(){
+  Map<String, dynamic> toJson() {
     return {
-      "id" : id,
-      "email" : email,
+      "id": id,
+      "email": email,
       "fullName": fullName,
-      "address" : address,
-      "imageLink" : linkImage
+      "address": address,
+      "imageLink": linkImage,
     };
+  }
+
+  factory UserModel.fromJson(Map<String, dynamic> json, String docId) {
+    return UserModel(
+      id: docId,
+      email: json["email"],
+      fullName: json["fullName"],
+      address: json["address"],
+      linkImage: json["imageLink"],
+    );
   }
 }

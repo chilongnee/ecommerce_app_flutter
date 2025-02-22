@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/screens/admin/admin_home_screen.dart';
 import 'package:flutter/material.dart';
 // SCREEN
 import 'package:ecommerce_app/home.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ), 
-        home: AuthWidget(),
+        home: AdminHomeScreen(),
         debugShowCheckedModeBanner: false,
       );
   }

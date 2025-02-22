@@ -1,14 +1,9 @@
-import 'package:ecommerce_app/screens/auth/verifiy_otp_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 // SCREEN
-// Button
-import 'package:flutter_social_button/flutter_social_button.dart';
-// FIREBASE
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ecommerce_app/services/firebase_auth_service.dart';
+import 'package:ecommerce_app/screens/auth/verifiy_otp_screen.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class ForgotPassword extends StatefulWidget {
@@ -19,14 +14,11 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _LoginState extends State<ForgotPassword> {
-  final FirebaseAuthService _auth = FirebaseAuthService();
-
   final _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   bool _isSigning = false;
   final FocusNode _focusNode = FocusNode();
-  final FocusNode _focusNode2 = FocusNode();
 
 
 Future<void> _forgotPassword() async {
