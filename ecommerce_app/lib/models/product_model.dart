@@ -27,7 +27,6 @@ class ProductModel {
     this.variantIds = const [],
   });
 
-  /// 📌 **Thêm phương thức `copyWith()`**
   ProductModel copyWith({
     String? id,
     String? parentId,
